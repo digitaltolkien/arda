@@ -10,6 +10,7 @@ black = "*"
 isort = "*"
 flake8 = "*"
 coverage = "*"
+build = "*"
 
 [requires]
 python_version = "3.9"
