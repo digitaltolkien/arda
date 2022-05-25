@@ -1,4 +1,4 @@
->>> from arda import Year, YearDelta
+>>> from arda.dates import Year, YearDelta
 
 >>> isildur_born = Year.SA(3209)
 >>> isildur_born
