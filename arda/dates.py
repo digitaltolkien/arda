@@ -99,3 +99,100 @@ class YearDelta:
 
     def __repr__(self):
         return f"YearDelta({self.years})"
+
+
+class ShireDate:
+    YULE = 13
+    LITHE = 14
+    MIDYEAR = 15
+    OVERLITHE = 16
+
+    def __init__(self, day, month, leap=False):
+        self.day = day
+        self.month = month
+        self.leap = leap
+
+    @staticmethod
+    def month_name(month):
+        return [
+            None,
+            "Afteryule",
+            "Solmath",
+            "Rethe",
+            "Astron",
+            "Thrimige",
+            "Forelithe",
+            "Afterlithe",
+            "Wedmath",
+            "Halimath",
+            "Winterfilth",
+            "Blotmath",
+            "Foreyule",
+            "Yule",
+            "Lithe",
+            "Mid-year's Day",
+            "Overlithe",
+        ][month]
+
+    @classmethod
+    def from_day(cls, day, leap=False):
+        if leap:
+            if day == 1:
+                return cls(2, ShireDate.YULE, leap)
+            elif 1 < day < 182:
+                m, d = divmod(day - 2, 30)
+                m += 1
+                d += 1
+                return cls(d, m, leap)
+            elif day == 182:
+                return cls(1, ShireDate.LITHE, leap)
+            elif day == 183:
+                return cls(0, ShireDate.MIDYEAR, leap)
+            elif day == 184:
+                return cls(0, ShireDate.OVERLITHE, leap)
+            elif day == 185:
+                return cls(2, ShireDate.LITHE, leap)
+            elif 185 < day < 366:
+                m, d = divmod(day - 186, 30)
+                m += 7
+                d += 1
+                return cls(d, m, leap)
+            elif day == 366:
+                return cls(1, ShireDate.YULE, leap)
+            else:
+                raise ValueError
+        else:
+            if day == 1:
+                return cls(2, ShireDate.YULE)
+            elif 1 < day < 182:
+                m, d = divmod(day - 2, 30)
+                m += 1
+                d += 1
+                return cls(d, m)
+            elif day == 182:
+                return cls(1, ShireDate.LITHE)
+            elif day == 183:
+                return cls(0, ShireDate.MIDYEAR)
+            elif day == 184:
+                return cls(2, ShireDate.LITHE)
+            elif 184 < day < 365:
+                m, d = divmod(day - 185, 30)
+                m += 7
+                d += 1
+                return cls(d, m)
+            elif day == 365:
+                return cls(1, ShireDate.YULE)
+            else:
+                raise ValueError
+
+    def __repr__(self):
+        if self.leap:
+            return f"ShireDate({self.day}, {self.month}, leap=True)"
+        else:
+            return f"ShireDate({self.day}, {self.month})"
+
+    def __str__(self):
+        if self.day:
+            return f"{self.day} {self.month_name(self.month)}"
+        else:
+            return f"{self.month_name(self.month)}"
