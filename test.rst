@@ -153,3 +153,11 @@ ValueError
 Traceback (most recent call last):
 ...
 ValueError
+
+>>> for i in range(1, 366):
+...     if ShireDate.from_day(i).to_day() != i:
+...         print(i, repr(ShireDate.from_day(i)), ShireDate.from_day(i).to_day())
+
+>>> for i in range(1, 367):
+...     if ShireDate.from_day(i, leap=True).to_day(leap=True) != i:
+...         print(i, repr(ShireDate.from_day(i, leap=True)), ShireDate.from_day(i, leap=True).to_day(leap=True))

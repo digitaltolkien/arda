@@ -185,6 +185,20 @@ class ShireDate:
             else:
                 raise ValueError
 
+    def to_day(self, leap=False):
+        if self.month == ShireDate.YULE:
+            return (366 if leap else 365) if self.day == 1 else 1
+        elif self.month == ShireDate.LITHE:
+            return 182 if self.day == 1 else (185 if leap else 184)
+        elif self.month == ShireDate.MIDYEAR:
+            return 183
+        elif self.month == ShireDate.OVERLITHE:
+            return 184
+        elif self.month < 7:
+            return 30 * (self.month - 1) + self.day + 1
+        else:
+            return 30 * (self.month - 1) + self.day + (5 if leap else 4)
+
     def __repr__(self):
         if self.leap:
             return f"ShireDate({self.day}, {self.month}, leap=True)"
