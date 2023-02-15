@@ -1,5 +1,4 @@
 class Year:
-
     FIRST_AGE_LENGTH = 590
     SECOND_AGE_LENGTH = 3441
     THIRD_AGE_LENGTH = 3021
