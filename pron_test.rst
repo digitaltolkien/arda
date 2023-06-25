@@ -27,6 +27,7 @@
 ...     "silivren",
 ...     "andúne",
 ...     "dûn",
+...     "Udûn",
 ... ]:
 ...     print(word, display_word(syllabify(word)))
 Isildur i.SIL.dur
@@ -55,3 +56,4 @@ Pelargir pe.LAR.gir
 silivren si.LIV.ren
 andúne an.DÚ.ne
 dûn DÛN
+Udûn U.dûn

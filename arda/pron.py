@@ -2,7 +2,7 @@ import re
 
 
 def is_vowel(ch):
-    return ch.lower() in "aeiouyäëïöüÿáéíóúý"
+    return ch.lower() in "aeiouyäëïöüÿáéíóúýâêîôûŷ"
 
 
 def is_short_vowel(ch):
