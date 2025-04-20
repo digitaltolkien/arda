@@ -108,3 +108,70 @@ def syllabify(word, debug=False):
         result[-3] = result[-3].upper()
 
     return result
+
+
+rules = [
+    ("b", "b"),
+    ("ch", "χ"),  # weakened in Gondor unless word final or before t
+    ("c", "k"),
+    ("dh", "ð"),
+    ("d", "d"),
+    ("f#", "v"),
+    ("f", "f"),
+    ("gh", "ɣ"),  # black speech / orkish
+    ("g", "g"),
+    ("ht", "çt"),
+    ("hw", "w̥"),
+    ("hy", "ç"),
+    ("h", "h"),
+    ("kh", "χ"),  # not Elvish (and incorrect for Dwarvish)
+    ("k", "k"),
+    ("lh", "l̥"),
+    ("l", "l"),
+    ("m", "m"),
+    ("ng#", "ŋ"),
+    ("ng", "ŋg"),
+    ("#ñ", "ŋ"),
+    ("n", "n"),
+    ("ph", "f"),  # ff if derived from pp
+    ("p", "p"),
+    ("qu", "kw"),
+    ("rh", "r̥"),
+    ("r", "r"),
+    ("sh", "ʃ"),
+    ("s", "s"),
+    ("th", "θ"),  # not in Dwarvish
+    ("ty", "tj"),
+    ("t", "t"),
+    ("v", "v"),
+    ("w", "w"),
+
+    ("á", "ɑː"),
+    ("a", "ɑ"),
+    ("eä", "e-a"),
+    ("e", "e"),
+    ("ëa", "e-a"),
+    ("ë", "e"),
+    ("io", "jο"),
+    ("i", "i"),
+    ("ó", "oː"),
+    ("o", "o"),
+    ("û", "uː"),
+    ("ú", "uː"),
+    ("u", "u"),
+    ("#", ""),
+]
+
+
+def to_ipa(word):
+    ipa = ""
+    word = "#" + word.lower() + "#"
+    while word:
+        for rule_in, rule_out in rules:
+            if word.startswith(rule_in):
+                ipa += rule_out
+                word = word[len(rule_in) :]
+                break
+        else:
+            raise ValueError(f"Can't match: {word}")
+    return ipa
