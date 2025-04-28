@@ -2,29 +2,50 @@ import re
 
 
 def is_vowel(ch, ipa):
-    return ch.lower() in "aeiouyäëïöüÿáéíóúý"
+    if ipa:
+        return ch.lower() in "ɑeiouy"
+    else:
+        return ch.lower() in "aeiouyäëïöüÿáéíóúý"
 
 
-def is_short_vowel(ch, ipa):
+def is_short_vowel(ch):
     return ch.lower() in "aeiouyäëïöüÿ"
 
 
+def is_ipa_vowel(ch):
+    return ch.lower() in "ɑeiouy"
+
+
+
 def is_diphthong(s, ipa):
-    return s.lower() in [
-        # Both
-        "ai",
-        "ui",
-        "au",
-        # Quenya only
-        "oi",
-        "iu",
-        "eu",
-        # Sindarin only
-        "ae",
-        "ei",
-        "oe",
-        "aw",  # @@@ at end
-    ]
+    if ipa:
+        return s.lower() in [
+            "ɑi",
+            "ui",
+            "ɑu",
+            "oi",
+            "iu",
+            "eu",
+            "ɑe",
+            "ei",
+            "oe",  # @@@
+        ]
+    else:
+        return s.lower() in [
+            # Both
+            "ai",
+            "ui",
+            "au",
+            # Quenya only
+            "oi",
+            "iu",
+            "eu",
+            # Sindarin only
+            "ae",
+            "ei",
+            "oe",
+            "aw",  # @@@ at end
+        ]
 
 
 def is_valid_consonant_cluster(s, ipa):
@@ -32,7 +53,7 @@ def is_valid_consonant_cluster(s, ipa):
 
 
 def display_word(w):
-    return ".".join(w)
+    return "·".join(s.strip("·") for s in w)
 
 
 def syllabify(word, ipa=False, debug=False):
@@ -49,13 +70,19 @@ def syllabify(word, ipa=False, debug=False):
     for ch in word[::-1]:
         if state == 0:
             current_syllable.insert(0, ch)
-            if is_vowel(ch, ipa):
+            if ipa and ch == "ˈ":
+                state = 1
+            elif is_vowel(ch, ipa):
                 state = 1
             if debug:
                 print("c", state, current_syllable)  # pragma: no cover
         elif state == 1:
             if is_vowel(ch, ipa):
-                if is_diphthong(ch + current_syllable[0], ipa):
+                if current_syllable[0] == "ˈ":
+                    current_syllable.insert(0, ch)
+                    if debug:
+                        print("c", state, current_syllable)  # pragma: no cover
+                elif is_diphthong(ch + current_syllable[0], ipa):
                     current_syllable.insert(0, ch)
                     if debug:
                         print("c", state, current_syllable)  # pragma: no cover
@@ -100,13 +127,24 @@ def syllabify(word, ipa=False, debug=False):
     result = ["".join(syllable) for syllable in result]
 
     if len(result) == 1:
-        result[-1] = result[-1].upper()
+        if ipa:
+            result[-1] = "ˈ" + result[-1]
+        else:
+            result[-1] = result[-1].upper()
     elif len(result) == 2:
-        result[-2] = result[-2].upper()
-    elif not is_short_vowel(result[-2][-1], ipa):
+        if ipa:
+            result[-2] = "ˈ" + result[-2]
+        else:
+            result[-2] = result[-2].upper()
+    elif ipa and (result[-2][-1] == "ː" or not is_ipa_vowel(result[-2][-1])):
+        result[-2] = "ˈ" + result[-2]
+    elif not ipa and not is_short_vowel(result[-2][-1]):
         result[-2] = result[-2].upper()
     else:
-        result[-3] = result[-3].upper()
+        if ipa:
+            result[-3] = "ˈ" + result[-3]
+        else:
+            result[-3] = result[-3].upper()
 
     return result
 
@@ -149,9 +187,9 @@ rules = [
 
     ("á", "ɑː"),
     ("a", "ɑ"),
-    ("eä", "e-ɑ"),
+    ("eä", "e·ɑ"),
     ("e", "e"),
-    ("ëa", "e-ɑ"),
+    ("ëa", "e·ɑ"),
     ("ë", "e"),
     ("#io", "jο"),
     ("i", "i"),
