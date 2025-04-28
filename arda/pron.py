@@ -16,7 +16,6 @@ def is_ipa_vowel(ch):
     return ch.lower() in "ɑeiouy"
 
 
-
 def is_diphthong(s, ipa):
     if ipa:
         return s.lower() in [
@@ -184,7 +183,6 @@ rules = [
     ("t", "t"),
     ("v", "v"),
     ("w", "w"),
-
     ("á", "ɑː"),
     ("a", "ɑ"),
     ("eä", "e·ɑ"),
