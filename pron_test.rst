@@ -103,8 +103,8 @@ ValueError: Can't match: @#
 ...     print(word, to_ipa(word))
 Isildur isildur
 Aulë ɑule
-Eärendil e-arendil
-Eressëa eresse-a
+Eärendil e-ɑrendil
+Eressëa eresse-ɑ
 Elrond elrond
 Aragorn ɑrɑgorn
 Tinúviel tinuːviel
@@ -117,12 +117,12 @@ Glorfindel glorfindel
 Glaurung glɑuruŋ
 Caradhras kɑrɑðrɑs
 Orome orome
-Fëanor fe-anor
+Fëanor fe-ɑnor
 Ancalima ɑnkɑlimɑ
 Elentári elentɑːri
 Denethor deneθor
 Periannath periɑnnɑθ
-Ecthelion ekθeljοn
+Ecthelion ekθeliοn
 Pelargir pelɑrgir
 silivren silivren
 andúne ɑnduːne
