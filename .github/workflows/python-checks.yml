@@ -8,20 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.9
-    - name: Install pipenv
-      run: pip install pipenv
+        python-version: 3.12
     - name: Install dependencies
-      run: pipenv install --dev
+      run: pip install -r requirements-dev.txt
     - name: Lint
-      run: pipenv run ./lint.sh
+      run: ./lint.sh
     - name: Test
-      run: pipenv run ./test.sh
+      run: ./test.sh
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v5
       with:
         fail_ci_if_error: true
