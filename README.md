@@ -9,14 +9,14 @@ dealing with Ages and the beginnings of a Shire Calendar class `ShireDate`.
 
 See `test.rst` for an example.
 
-Secondly, a syllabification library for breaking Elvish words into
-syllables and calculating where the stress should go.
+Secondly, a pronunciation library capable of converting Elvish words into IPA
+and syllabifying them with a stress marker.
 
 See `pron_test.rst` for an example.
 
 
 ## Development
 
-Install the dev dependencies in `Pipfile`.
+Install the dev dependencies in `requirements-dev.txt`.
 
 Then run `test.sh` to test or `lint.sh` to lint.
