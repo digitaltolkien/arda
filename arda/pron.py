@@ -1,15 +1,15 @@
 import re
 
 
-def is_vowel(ch):
+def is_vowel(ch, ipa):
     return ch.lower() in "aeiouyäëïöüÿáéíóúý"
 
 
-def is_short_vowel(ch):
+def is_short_vowel(ch, ipa):
     return ch.lower() in "aeiouyäëïöüÿ"
 
 
-def is_diphthong(s):
+def is_diphthong(s, ipa):
     return s.lower() in [
         # Both
         "ai",
@@ -27,7 +27,7 @@ def is_diphthong(s):
     ]
 
 
-def is_valid_consonant_cluster(s):
+def is_valid_consonant_cluster(s, ipa):
     return s.lower().startswith(("gl",))  # @@@ INCOMPLETE!
 
 
@@ -35,26 +35,27 @@ def display_word(w):
     return ".".join(w)
 
 
-def syllabify(word, debug=False):
+def syllabify(word, ipa=False, debug=False):
     word = word.lower()
-    word = re.sub("dh", "ð", word)
-    word = re.sub("th", "θ", word)
-    word = re.sub("ch", "χ", word)
-    word = re.sub("ng(?=.)", "ŋg", word)
-    word = re.sub("ng", "ŋ", word)
+    if not ipa:
+        word = re.sub("dh", "ð", word)
+        word = re.sub("th", "θ", word)
+        word = re.sub("ch", "χ", word)
+        word = re.sub("ng(?=.)", "ŋg", word)
+        word = re.sub("ng", "ŋ", word)
     state = 0
     result = []
     current_syllable = []
     for ch in word[::-1]:
         if state == 0:
             current_syllable.insert(0, ch)
-            if is_vowel(ch):
+            if is_vowel(ch, ipa):
                 state = 1
             if debug:
                 print("c", state, current_syllable)  # pragma: no cover
         elif state == 1:
-            if is_vowel(ch):
-                if is_diphthong(ch + current_syllable[0]):
+            if is_vowel(ch, ipa):
+                if is_diphthong(ch + current_syllable[0], ipa):
                     current_syllable.insert(0, ch)
                     if debug:
                         print("c", state, current_syllable)  # pragma: no cover
@@ -71,7 +72,7 @@ def syllabify(word, debug=False):
                 if debug:
                     print("c", state, current_syllable)  # pragma: no cover
         elif state == 2:
-            if is_vowel(ch):
+            if is_vowel(ch, ipa):
                 result.insert(0, current_syllable)
                 if debug:
                     print("r", result)  # pragma: no cover
@@ -80,7 +81,7 @@ def syllabify(word, debug=False):
                     print("c", state, current_syllable)  # pragma: no cover
                 state = 1
             else:
-                if is_valid_consonant_cluster(ch + "".join(current_syllable)):
+                if is_valid_consonant_cluster(ch + "".join(current_syllable), ipa):
                     current_syllable.insert(0, ch)
                     if debug:
                         print("c", state, current_syllable)  # pragma: no cover
@@ -102,7 +103,7 @@ def syllabify(word, debug=False):
         result[-1] = result[-1].upper()
     elif len(result) == 2:
         result[-2] = result[-2].upper()
-    elif not is_short_vowel(result[-2][-1]):
+    elif not is_short_vowel(result[-2][-1], ipa):
         result[-2] = result[-2].upper()
     else:
         result[-3] = result[-3].upper()

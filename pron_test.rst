@@ -122,7 +122,7 @@ Ancalima ɑnkɑlimɑ
 Elentári elentɑːri
 Denethor deneθor
 Periannath periɑnnɑθ
-Ecthelion ekθeliοn
+Ecthelion ekθelion
 Pelargir pelɑrgir
 silivren silivren
 andúne ɑnduːne
